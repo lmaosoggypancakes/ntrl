@@ -18,4 +18,6 @@ model Park {
   transportation  String[]
   region          String
   utilities       String[]
+  x               Float
+  y               Float
 }
