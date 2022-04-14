@@ -19,9 +19,11 @@ export class AppController {
       activities: string[],
       transportation: string[],
       region: string,
-      utilities: string[]
+      utilities: string[],
+      x: number,
+      y: number
     }) {
-      const { title, dogabble, activities, transportation, region, utilities } = parkData
+      const { title, dogabble, activities, transportation, region, utilities, x, y } = parkData
       try {
         return await this.appService.createPark({
           title,
@@ -29,7 +31,9 @@ export class AppController {
           activities,
           transportation,
           region,
-          utilities
+          utilities,
+          x,
+          y
         });
       } catch(e) {
         
