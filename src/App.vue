@@ -19,8 +19,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="bg-green-200 w-screen h-screen p-2 flex flex-col">
-    <p class="text-3xl p-4 text-center">Find parks in your area!</p>
+  <div class="bg-green-200 w-screen h-screen p-2 flex flex-col font-black">
+    <p class="text-3xl p-4 text-center">Find parks in your area</p>
     <div class="border-4 rounded-md border-slate-800 bg-white grid grid-cols-2 gap-2 h-full">
       <div class="my-4 border-r-2 border-r-slate-900 flex flex-col space-y-10">
         <div class="mx-2 pb-8 border-b-2 border-slate-200">
@@ -34,7 +34,7 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div class="flex flex-col justify-center">
-        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height: 50%;">
+        <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:100%">
             <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" 
             :projection="projection" />
             <ol-tile-layer>
@@ -47,11 +47,14 @@ onBeforeMount(async () => {
 </template>
 
 <style>
-  @import url('https://rsms.me/inter/inter.css');
-  html { font-family: 'Inter', sans-serif; }
-  @supports (font-variation-settings: normal) {
-    html { font-family: 'Inter var', sans-serif; }
-  }
+@font-face {
+ font-family: Horizon;
+  src: url('./assets/fonts/Horizon/horizon_outlined.otf');
+}
+
+body {
+  font-family: 'Horizon';
+}
 .slide-down-enter-active,
 .slide-down-leave-active {
   transition: all 0.25s ease-out;
