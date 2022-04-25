@@ -1,11 +1,32 @@
-# Vue 3 + Typescript + Vite
+# NTRL
+<img src="./src/assets/logo.png" width=500 height=500 />
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# Table of Contents
+1. [App Description and Usage](#app-description-and-usage)
+2. [Libraries Used](#libraries-used)
+3. [Developer Guide](#developer-guide)
 
-## Recommended IDE Setup
+# App Description and Usage
+## What is NTRL?
+NTRL (pronounced "natural") is an application that allows Nevadans to search for parks, lakes, and rivers in their area. It is directed towards families looking to explore nature and the outdoors by giving them an easy interface from which they can filter parks based on their preference.
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+Users can filter for parks by:
+- Name
+- Pets allowed
+- Utilities
+- Activities
+- Transportation
+- Region
 
-## Type Support For `.vue` Imports in TS
+NTRL also uses the Google Maps api to allow users to quickly find directions to a specific park.
+## Motivation
+We wanted to create an application that met FBLA's criteria but also one that could actually be used by typical Americans, which led us to create a cross-platform application that does not require programming experience to actually use. We also made the decision to make our application source code open-source to allow anyone to contribute and propose changes/improvements to the application.
+## How to use NTRL
+A web version of NTRL is available at [https://ntrl.app/](https://ntrl.app/) and runs on most modern browsers. There is also a cross-platform desktop application that runs (and looks the same) on Linux, MacOS and Windows computers. Our desktop client is recommended to use because it does not rely on a browser, which itself can take up valuable PC resources.
+### Filtering for parks
+Users can just search for parks using the provided search box, but can also use advanced filters by selecting the drop-down.
+<img src="./screenshots/search_bar.png">
+<img src="./screenshots/advanced_filters.png">
+# Libraries Used 
+# Developer Guide
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
