@@ -48,8 +48,8 @@ const props = defineProps<{
             </button>
         </div>
         <transition :name="slide" class="overflow-hidden"> <!-- transition element wraps the content such that it's state transitions (open/show) can
-            be animated by sliding up/down-->
-            <div v-if="show" class="border-2 border-slate-800 rounded-md p-2 flex flex-col space-y-4">
+            be animated by sliding up/down. might not work in legacy browsers or older PC's-->
+            <div :class="{'hidden': show}" class="border-2 border-slate-800 rounded-md p-2 flex flex-col space-y-4">
                 <div class="flex justify-between">
                     <div>
                         <label for="dogabble" class="mr-4">Pets Allowed</label>
