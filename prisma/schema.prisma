@@ -13,8 +13,15 @@ model Park {
   dogabble        Boolean
   activities      String[] 
   transportation  String[]
-  region          String
+  region          Region
   utilities       String[]
   x               Float
   y               Float
+  visits          Int   @default(0)
+}
+
+enum Region {
+  Western 
+  Southern  
+  Northern
 }
