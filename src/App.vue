@@ -71,7 +71,7 @@ const shownParks = ref<Park[]>([])
 // so we send the request asynchronously (in a separate PC thread) such that the web page does not halt while waiting for the response from
 // the server.
 onBeforeMount(async () => {
-  const response = await axios.get("http://ntrl-fbla.herokuapp.com/")
+  const response = await axios.get("https://ntrl-fbla.herokuapp.com/")
   allParks.value = response.data as Park[]
   shownParks.value = allParks.value
   allParks.value.forEach((park: Park) => {
@@ -89,7 +89,7 @@ onBeforeMount(async () => {
 
 const openGoogleMapsPark = async (park: Park) => {
   // first mark the park as "visited"
-  const resp = await axios.put("http://ntrl-fbla.herokuapp.com/visit/"+park.id)
+  const resp = await axios.put("https://ntrl-fbla.herokuapp.com/visit/"+park.id)
   // reference: https://developers.google.com/maps/documentation/urls/get-started
   const urlEncodedParkName = park.title.replaceAll(" ", "+")
   const url = "https://www.google.com/maps/search/?api=1&query=" + urlEncodedParkName
