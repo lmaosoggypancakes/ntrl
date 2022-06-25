@@ -17,11 +17,23 @@ model Park {
   utilities       String[]
   x               Float
   y               Float
-  visits          Int   @default(0)
+  visits          Visit[]
 }
 
+model Visit {
+  id              Int       @default(autoincrement()) @id
+  visited         DateTime  @default(now())
+  Park            Park?     @relation(fields: [parkId], references: [id])
+  parkId          Int?
+}
 enum Region {
-  Western 
+  Eastern 
   Southern  
   Northern
+}
+
+model Admin {
+  api_key         String    @id
+  email           String
+  name            String
 }

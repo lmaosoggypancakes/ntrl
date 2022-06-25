@@ -50,8 +50,36 @@ export class AppService {
       return await this.prisma.park.update({
         where: { id },
         data: {
-          visits: { increment: 1 },
+          visits: {
+            create: [{}],
+          },
         },
+      });
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+
+  async getVisitsFromPark(id: number) {
+    try {
+      return await this.prisma.visit.findMany({
+        where: {
+          parkId: id,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+
+  async createManyParks(data: Prisma.ParkCreateManyInput) {
+    const a = Array(data);
+    a.forEach((p) => console.log(a));
+    try {
+      return await this.prisma.park.createMany({
+        data,
       });
     } catch (err) {
       console.error(err);

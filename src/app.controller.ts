@@ -23,6 +23,8 @@ export class AppController {
     return await this.appService.getParks();
   }
 
+  /* API endpoints for creating, deleting, viewing, or updating a park */
+
   // Likewise, the @Post() decorator provided by NestJS tells the server that this method should run when a user sends a POST request to the server.
   // i.e, the user wants to add a new park to the database.
   @Post()
@@ -35,27 +37,42 @@ export class AppController {
     return newPark;
     // submitted bad data (missing certain fields, park name already taken, etc)
   }
+
+  @Post('/many')
+  async addManyParks(@Body() parksData: Prisma.ParkCreateInput) {
+    const newParks = await this.appService.createManyParks(parksData);
+    if (!newParks) throw new BadRequestException('Bad park input data :(');
+    return newParks;
+  }
   @Get('/:id')
-  async getPark(@Param('id') id: number) {
+  async getPark(@Param('id') id) {
+    id = parseInt(id);
     const park = await this.appService.getPark(id);
     if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
     return park;
   }
 
   @Put('/:id')
-  async updatePark(
-    @Param('id') id: number,
-    @Body() data: Prisma.ParkUpdateInput,
-  ) {
+  async updatePark(@Param('id') id, @Body() data: Prisma.ParkUpdateInput) {
+    id = parseInt(id);
     const park = await this.appService.updatePark(id, data);
     if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
     return park;
   }
-
+  // A park is "visited" when a user clicks on it and is redirected to google maps.
   @Put('/visit/:id')
-  async visitPark(@Param() id: number) {
+  async visitPark(@Param('id') id) {
+    id = parseInt(id);
     const park = await this.appService.visitPark(id);
     if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
     return park;
+  }
+
+  @Get('/visits/:id')
+  async getVisitsFromPark(@Param('id') id) {
+    id = parseInt(id);
+    const visits = await this.appService.getVisitsFromPark(id);
+    if (!visits) throw new NotFoundException(`Park with ID ${id} not found :(`);
+    return visits;
   }
 }
