@@ -8,9 +8,11 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Park, Prisma } from '@prisma/client';
 import { AppService } from './app.service';
+import { AuthGuard } from './auth.guard';
 
 @Controller()
 export class AppController {
@@ -27,6 +29,7 @@ export class AppController {
 
   // Likewise, the @Post() decorator provided by NestJS tells the server that this method should run when a user sends a POST request to the server.
   // i.e, the user wants to add a new park to the database.
+  @UseGuards(AuthGuard)
   @Post()
   async addPark(
     @Body() // Specifies that the server should look for the park data the user submitted to the server in the body of the HTTP request.
@@ -37,13 +40,14 @@ export class AppController {
     return newPark;
     // submitted bad data (missing certain fields, park name already taken, etc)
   }
-
+  @UseGuards(AuthGuard)
   @Post('/many')
   async addManyParks(@Body() parksData: Prisma.ParkCreateInput) {
     const newParks = await this.appService.createManyParks(parksData);
     if (!newParks) throw new BadRequestException('Bad park input data :(');
     return newParks;
   }
+
   @Get('/:id')
   async getPark(@Param('id') id) {
     id = parseInt(id);
@@ -51,7 +55,7 @@ export class AppController {
     if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
     return park;
   }
-
+  @UseGuards(AuthGuard)
   @Put('/:id')
   async updatePark(@Param('id') id, @Body() data: Prisma.ParkUpdateInput) {
     id = parseInt(id);
@@ -67,7 +71,7 @@ export class AppController {
     if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
     return park;
   }
-
+  @UseGuards(AuthGuard)
   @Get('/visits/:id')
   async getVisitsFromPark(@Param('id') id) {
     id = parseInt(id);

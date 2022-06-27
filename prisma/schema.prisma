@@ -32,8 +32,9 @@ enum Region {
   Northern
 }
 
+
 model Admin {
-  api_key         String    @id
+  api_key         String    @id @default(uuid())
   email           String
   name            String
 }

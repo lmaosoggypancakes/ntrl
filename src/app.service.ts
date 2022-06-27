@@ -9,7 +9,7 @@ export class AppService {
   constructor(private prisma: PrismaService) {} // Constructor initializes the Prisma ORM (object-relational mapper) service used to query the database.
   async getParks(): Promise<Park[]> {
     // asynchronous method declaration must return a Promise
-    return await this.prisma.park.findMany({ include: { visits: true }}) // findMany() with no arguments returns all of the parks stored in the database.
+    return await this.prisma.park.findMany({ include: { visits: true } }); // findMany() with no arguments returns all of the parks stored in the database.
   }
   async getPark(id: number): Promise<Park> {
     try {
@@ -83,6 +83,18 @@ export class AppService {
       });
     } catch (err) {
       console.error(err);
+      return null;
+    }
+  }
+
+  async checkKeyForAdmin(key: string) {
+    try {
+      return await this.prisma.admin.findUnique({
+        where: {
+          api_key: key,
+        },
+      });
+    } catch (err) {
       return null;
     }
   }
