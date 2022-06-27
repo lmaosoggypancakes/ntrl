@@ -3,7 +3,7 @@
     <div
       class="w-full h-full border-2 border-white rounded-xl grid grid-rows-2"
     >
-      <div class="border-2 border-white grid grid-cols-2">
+      <div class="grid grid-cols-2 border-b-2 border-b-white">
         <div
           class="relative overflow-hidden"
           :class="{
@@ -19,27 +19,62 @@
             v-if="showChart"
           />
         </div>
-        <div class="border-2 border-white relative" v-if="showActivePark">
+        <div class="relative border-l-2 border-white" v-if="showActivePark">
           <button
-            class="absolute bg-yellow-200 text-black p-2 right-0 rounded-sm"
+            class="absolute bg-primary hover:bg-primary-focus text-black p-2 right-0 rounded-xl z-10"
             @click="closeActivePark()"
           >
-            X
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
           </button>
           <v-chart autoresize class="chart" :option="activeParkChartOptions" />
         </div>
       </div>
       <div class="grid grid-cols-4 overflow-hidden">
-        <div class="col-span-3 overflow-auto">
+        <div class="col-span-3 overflow-auto p-4">
           <li
             v-for="park in parks"
-            class="bg-slate-500 hover:bg-gray-600"
+            class="bg-neutral hover:bg-[#292524] list-none p-4 rounded-md flex flex-row justify-between items-center"
             @click="togglePark(park.id)"
           >
-            {{ park.title }} - {{ park.visits.length }}
+            <span>{{ park.title }}</span>
+            <div>
+              <router-link
+                class="float-right p-1 border-2 border-primary rounded-md hover:bg-primary hover:text-neutral"
+                :to="'/edit/' + park.id"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+              </router-link>
+              <span class="float-right mr-2"
+                >{{ park.visits.length }} visits</span
+              >
+            </div>
           </li>
         </div>
-        <div class="border-2 border-white col-span-1">
+        <div class="border-l-2 border-l-white col-span-1">
           <img src="../../assets/logo.png" alt="" />
         </div>
       </div>
@@ -79,6 +114,7 @@ const activeParkChartData = computed(() => {
 });
 const activeParkChartOptions = computed(() => {
   return {
+    color: ["#F28C18"],
     tooltip: {
       trigger: "item",
     },
@@ -122,6 +158,7 @@ onBeforeMount(async () => {
       text: "All Parks",
       x: "center",
     },
+    color: ["#F28C18"],
     tooltip: {
       trigger: "item",
       formatter: "{b} : {c} visits",
@@ -149,8 +186,7 @@ const closeActivePark = () => {
 };
 
 const goToPark = (params) => {
-  const park = parks.value.find((p) => (p.title = params.name));
-  console.log(park.visits);
+  const park = parks.value.find((p) => p.title == params.name);
   router.push(`/edit/${park.id}`);
 };
 
