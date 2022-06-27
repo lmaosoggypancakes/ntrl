@@ -1,5 +1,5 @@
 import axios from "axios";
-export const API_URL = "https://fbla-ntrl.herokuapp.com"; // "https://fbla-ntrl.herokuapp.com";
+export const API_URL = "https://ntrl-fbla.herokuapp.com"; // "https://fbla-ntrl.herokuapp.com";
 export const createPark = async (park) => {
   try {
     return await axios.post(API_URL, park);
