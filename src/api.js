@@ -1,6 +1,6 @@
 import axios from "axios";
 const API_KEY = localStorage.getItem("__API_KEY");
-export const API_URL = "http://localhost:8000"; // "https://fbla-ntrl.herokuapp.com";
+export const API_URL = "https://fbla-ntrl.herokuapp.com"; // "https://fbla-ntrl.herokuapp.com";
 export const createPark = async (park) => {
   try {
     return await axios.post(`${API_URL}?key=${API_KEY}`, park);
