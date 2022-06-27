@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Park, Prisma } from '@prisma/client';
@@ -17,7 +18,11 @@ import { AuthGuard } from './auth.guard';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {} // AppService is the one declared in ~/src/app.service.ts
-
+  @UseGuards(AuthGuard)
+  @Get('/hello')
+  async hello(@Query('key') key: string) {
+    return key;
+  }
   // TypeScript method decorator to explicitly state that this method should run when a user sends a GET request to the home page of the server url.
   // Returns, in JSON, a list of all parks.
   @Get()
