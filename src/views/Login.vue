@@ -7,8 +7,18 @@
         <span class="text-lg"> Welcome! Please enter your API key. </span>
       </label>
       <label class="input-group w-1/2">
-        <input type="text" class="input input-bordered w-full" v-model="key" />
-        <button class="btn btn-square" :disabled="!isValidKey" @click="setKey">
+        <input
+          type="text"
+          class="input input-bordered w-full"
+          v-model="key"
+          @keyup.enter="setKey"
+        />
+        <button
+          class="btn btn-square"
+          :disabled="!isValidKey"
+          v-if="!loading"
+          @click="setKey"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5"
@@ -22,6 +32,7 @@
             />
           </svg>
         </button>
+        <button class="btn btn-square loading" disabled v-if="loading"></button>
       </label>
     </div>
   </div>
@@ -29,13 +40,25 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useToast } from "vue-toastification";
+import { verifyUser } from "../api";
 import router from "../router";
+const toast = useToast();
 const key = ref("");
+const loading = ref(false);
 const isValidKey = computed(() => {
-  return key.value.trim().length === 16;
+  return key.value.trim().length != 0;
 });
-const setKey = () => {
-  localStorage.setItem("__API_KEY", key.value);
-  router.push("/");
+const setKey = async () => {
+  loading.value = true;
+  const response = await verifyUser(key.value);
+  if (!response) {
+    toast.error("Invalid API key.", {});
+    key.value = "";
+    loading.value = false;
+  } else {
+    localStorage.setItem("__API_KEY", key.value);
+    router.push("/");
+  }
 };
 </script>
