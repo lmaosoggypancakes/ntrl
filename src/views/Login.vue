@@ -41,7 +41,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useToast } from "vue-toastification";
-import { verifyUser } from "../api";
+import { verifyUser, setApiKey } from "../api";
 import router from "../router";
 const toast = useToast();
 const key = ref("");
@@ -57,7 +57,7 @@ const setKey = async () => {
     key.value = "";
     loading.value = false;
   } else {
-    localStorage.setItem("__API_KEY", key.value);
+    setApiKey(key.value);
     router.push("/");
   }
 };

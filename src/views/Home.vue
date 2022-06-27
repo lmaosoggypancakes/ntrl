@@ -7,6 +7,7 @@
         active-class="bg-primary text-neutral"
       >
         <svg
+          ref="analytics"
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
           fill="none"
@@ -27,6 +28,7 @@
         to="/new"
       >
         <svg
+          ref="create"
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
           fill="none"
@@ -45,3 +47,17 @@
     <router-view> </router-view>
   </div>
 </template>
+<script setup>
+import { useTippy } from "vue-tippy";
+import { ref } from "vue";
+const analytics = ref(null);
+const create = ref(null);
+useTippy(analytics, {
+  content: "Analytics",
+  theme: "material",
+});
+useTippy(create, {
+  content: "Add Park",
+  theme: "material",
+});
+</script>

@@ -145,7 +145,7 @@
                 <input
                   type="text"
                   placeholder="Add new activity"
-                  class="input input-bordered w-full capitalize"
+                  class="input input-bordered w-full"
                   v-model="newActivity"
                   @keyup.enter="addActivity()"
                 />
@@ -200,7 +200,7 @@
                 <input
                   type="text"
                   placeholder="Add new utility"
-                  class="input input-bordered w-full capitalize"
+                  class="input input-bordered w-full"
                   @keyup.enter="addUtility()"
                   v-model="newUtility"
                 />
@@ -256,7 +256,7 @@
                 <input
                   type="text"
                   placeholder="Add new transportation"
-                  class="input input-bordered w-full capitalize"
+                  class="input input-bordered w-full"
                   @keyup.enter="addTransportation()"
                   v-model="newTransportation"
                 />

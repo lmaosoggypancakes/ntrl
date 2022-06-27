@@ -2,6 +2,16 @@
   <div class="w-full h-full p-4">
     <div
       class="w-full h-full border-2 border-white rounded-xl grid grid-rows-2"
+      v-if="loading == 100"
+      v-motion
+      :initial="{
+        opacity: 0,
+        y: 100,
+      }"
+      :enter="{
+        opacity: 1,
+        y: 0,
+      }"
     >
       <div class="grid grid-cols-2 border-b-2 border-b-white">
         <div
@@ -79,16 +89,25 @@
         </div>
       </div>
     </div>
+    <div v-else class="w-full h-full flex justify-center items-center">
+      <loader
+        :animation-duration="1000"
+        :size="100000"
+        color="#F28C18"
+      ></loader>
+    </div>
   </div>
 </template>
 <script setup>
 import { ref, onBeforeMount, computed, watch, reactive } from "vue";
 import { getParks } from "../../api";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 const parks = ref([]);
+const toast = useToast();
 const router = useRouter();
 const activeParkId = ref(41);
-
+const loading = ref(0);
 const showActivePark = ref(false);
 const activeParkVisitDates = computed(() => {
   return parks.value
@@ -109,7 +128,6 @@ const activeParkChartData = computed(() => {
   activeParkVisits.value.forEach((v, i) => {
     points.push([new Date(activeParkVisitDates.value[i]).valueOf(), v]);
   });
-  console.log(points);
   return points;
 });
 const activeParkChartOptions = computed(() => {
@@ -128,7 +146,7 @@ const activeParkChartOptions = computed(() => {
       {
         data: activeParkChartData.value,
         type: "line",
-        smooth: true,
+        smooth: false,
       },
     ],
     title: {
@@ -147,12 +165,13 @@ const showChart = ref(false);
 const chartOptions = ref({});
 
 onBeforeMount(async () => {
+  loading.value = 10;
   const response = await getParks();
-  if (!response) alert("Parks not found");
+  loading.value = 40;
+  if (!response) toast.error("Parks not found");
   parks.value = response.data;
   parks.value.sort((a, b) => b.visits.length - a.visits.length);
-  console.log(parks.value.map((park) => park.title));
-
+  loading.value = 60;
   chartOptions.value = {
     title: {
       text: "All Parks",
@@ -174,6 +193,7 @@ onBeforeMount(async () => {
       },
     ],
   };
+  loading.value = 100;
   showChart.value = true;
 });
 const togglePark = (id) => {
