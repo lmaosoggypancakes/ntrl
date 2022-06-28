@@ -2,7 +2,7 @@
   <div class="w-full h-full p-4">
     <div
       class="w-full h-full border-2 border-white rounded-xl grid grid-rows-2"
-      v-if="loading == 100"
+      v-if="!loading"
       v-motion
       :initial="{
         opacity: 0,
@@ -90,11 +90,7 @@
       </div>
     </div>
     <div v-else class="w-full h-full flex justify-center items-center">
-      <loader
-        :animation-duration="1000"
-        :size="100000"
-        color="#F28C18"
-      ></loader>
+      <loader :active="loading" opacity="0.15" color="#F28C18"></loader>
     </div>
   </div>
 </template>
@@ -107,7 +103,7 @@ const parks = ref([]);
 const toast = useToast();
 const router = useRouter();
 const activeParkId = ref(41);
-const loading = ref(0);
+const loading = ref(true);
 const showActivePark = ref(false);
 const activeParkVisitDates = computed(() => {
   return parks.value
@@ -165,13 +161,10 @@ const showChart = ref(false);
 const chartOptions = ref({});
 
 onBeforeMount(async () => {
-  loading.value = 10;
   const response = await getParks();
-  loading.value = 40;
   if (!response) toast.error("Parks not found");
   parks.value = response.data;
   parks.value.sort((a, b) => b.visits.length - a.visits.length);
-  loading.value = 60;
   chartOptions.value = {
     title: {
       text: "All Parks",
@@ -193,7 +186,7 @@ onBeforeMount(async () => {
       },
     ],
   };
-  loading.value = 100;
+  loading.value = false;
   showChart.value = true;
 });
 const togglePark = (id) => {
