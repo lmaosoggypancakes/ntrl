@@ -1,6 +1,6 @@
 <template>
-  <div class="w-screen h-screen flex flex-row">
-    <div class="bg-neutral w-1/12 flex flex-col items-center justify-around">
+  <div class="lg:w-screen lg:h-screen flex flex-col lg:flex-row">
+    <div class="bg-neutral flex flex-row lg:flex-col justify-around p-4">
       <router-link
         to="/analytics"
         class="p-2 border-2 border-primary rounded-md"
@@ -44,7 +44,9 @@
         </svg>
       </router-link>
     </div>
-    <router-view> </router-view>
+    <div class="h-full">
+      <router-view> </router-view>
+    </div>
   </div>
 </template>
 <script setup>

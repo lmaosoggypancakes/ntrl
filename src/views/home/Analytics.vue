@@ -13,18 +13,22 @@
         y: 0,
       }"
     >
-      <div class="grid grid-cols-2 border-b-2 border-b-white">
+      <div
+        class="grid lg:grid-cols-2 grid-rows-2 lg:grid-rows-none border-b-2 border-b-white"
+      >
         <div
-          class="relative overflow-hidden"
+          class="relative overflow-hidden lg:grid-rows-none"
           :class="{
-            'col-span-2': !showActivePark,
-            'col-span-1': showActivePark,
+            'lg:col-span-2': !showActivePark,
+            'lg:col-span-1': showActivePark,
+            'row-span-1': showActivePark,
+            'row-span-2': !showActivePark,
           }"
         >
           <v-chart
             @click="goToPark"
             autoresize
-            class="chart"
+            class="chart h-96"
             :option="chartOptions"
             v-if="showChart"
           />
@@ -51,7 +55,7 @@
         </div>
       </div>
       <div class="grid grid-cols-4 overflow-hidden">
-        <div class="col-span-3 overflow-auto p-4">
+        <div class="lg:col-span-3 col-span-4 overflow-auto p-4">
           <li
             v-for="park in parks"
             class="bg-neutral hover:bg-[#292524] list-none p-4 rounded-md flex flex-row justify-between items-center"
@@ -84,7 +88,7 @@
             </div>
           </li>
         </div>
-        <div class="border-l-2 border-l-white col-span-1">
+        <div class="border-l-2 border-l-white col-span-1 hidden lg:block">
           <img src="../../assets/logo.png" alt="" />
         </div>
       </div>
