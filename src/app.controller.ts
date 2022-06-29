@@ -53,14 +53,14 @@ export class AppController {
     return newParks;
   }
 
-  @Get('/:id')
+  @Get('/:id') // when a request is sent to get the data of a park with a certain ID
   async getPark(@Param('id') id) {
     id = parseInt(id);
     const park = await this.appService.getPark(id);
-    if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`);
+    if (!park) throw new NotFoundException(`Park with ID ${id} not found :(`); // HTTP 404
     return park;
   }
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard) // only authorized users should be able to edit a park
   @Put('/:id')
   async updatePark(@Param('id') id, @Body() data: Prisma.ParkUpdateInput) {
     id = parseInt(id);
@@ -69,7 +69,7 @@ export class AppController {
     return park;
   }
   // A park is "visited" when a user clicks on it and is redirected to google maps.
-  @Put('/visit/:id')
+  @Put('/visit/:id') // used directly by the frontend client; no authorization required
   async visitPark(@Param('id') id) {
     id = parseInt(id);
     const park = await this.appService.visitPark(id);
@@ -77,7 +77,7 @@ export class AppController {
     return park;
   }
   @UseGuards(AuthGuard)
-  @Get('/visits/:id')
+  @Get('/visits/:id') // only authorized users should be able to view the visits a park has
   async getVisitsFromPark(@Param('id') id) {
     id = parseInt(id);
     const visits = await this.appService.getVisitsFromPark(id);
