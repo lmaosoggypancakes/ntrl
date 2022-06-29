@@ -44,7 +44,7 @@
         </svg>
       </router-link>
     </div>
-    <div class="h-full">
+    <div class="h-full w-full">
       <router-view> </router-view>
     </div>
   </div>
