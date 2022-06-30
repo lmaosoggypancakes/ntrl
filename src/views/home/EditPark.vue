@@ -76,7 +76,7 @@
               <select class="select select-bordered w-full" v-model="region">
                 <option selected>Northern</option>
                 <option>Southern</option>
-                <option>Western</option>
+                <option>Eastern</option>
               </select>
               <span>Nevada</span>
             </div>
