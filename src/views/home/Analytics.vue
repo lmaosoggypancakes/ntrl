@@ -94,7 +94,7 @@
       </div>
     </div>
     <div v-else class="w-full h-full flex justify-center items-center">
-      <loader :active="loading" opacity="0.15" color="#F28C18"></loader>
+      <loader :active="loading" :opacity="0.15" color="#F28C18"></loader>
     </div>
   </div>
 </template>
@@ -137,7 +137,7 @@ const activeParkChartOptions = computed(() => {
       trigger: "item",
     },
     xAxis: {
-      min: activeParkChartData.value[0][0] || 0,
+      min: activeParkChartData.value[0] ? activeParkChartData.value[0][0] : 0,
       max: activeParkChartData.value[activeParkChartData.value.length - 1],
     },
 
