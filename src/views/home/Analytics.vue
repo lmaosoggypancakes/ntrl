@@ -137,7 +137,7 @@ const activeParkChartOptions = computed(() => {
       trigger: "item",
     },
     xAxis: {
-      min: activeParkChartData.value[0][0],
+      min: activeParkChartData.value[0][0] || 0,
       max: activeParkChartData.value[activeParkChartData.value.length - 1],
     },
 
