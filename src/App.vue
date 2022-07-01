@@ -6,6 +6,7 @@ import { saveAs } from "file-saver";
 // and automatic updating of the UI.
 import { onBeforeMount, ref } from "vue";
 import SearchMenu from "./components/SearchMenu.vue";
+import { jsPDF } from "jspdf";
 // SearchMenu is the component that handles searching for parks based on filters. Its code is in another file for a tree-like structure of components
 // benefits: easier to debug and more human readable.
 import axios from "axios"; // HTTP request library used for getting data of the parks
@@ -16,7 +17,6 @@ const mapCenter = ref([-119.7, 39.445706]);
 const mapProjection = ref("EPSG:4326");
 const mapZoom = ref(8);
 const mapRotation = ref(0);
-
 // default user search inputs, a.k.a. show all parks
 const searchData = ref({
   title: "",
@@ -75,17 +75,59 @@ const changeData = (newParkSearchData: Park) => {
     }
   });
 };
-let button = {
-  wasClicked: true,
-};
 
-const saveData = () => {
-  if (button.wasClicked) {
-    const blob = new Blob([JSON.stringify(shownParks.value)], {
-      type: "text/json;charset=utf-8",
-    });
-    saveAs(blob, "data.json"); //saves park data as JSON
-  }
+const saveData = async () => {
+  const doc = new jsPDF("p", "pt", "a4");
+  const PAGE_HEIGHT = 842;
+  const font1 = await (
+    await axios.get("/src/assets/fonts/AirbnbCereal_W_Md.otf")
+  ).data;
+  const font2 = await (
+    await axios.get("/src/assets/fonts/AirbnbCereal_W_Bd.otf")
+  ).data;
+  doc.addFileToVFS("Cereal.otf", font1);
+  doc.addFileToVFS("Cereal Bold.otf", font2);
+  doc.addFont("Cereal.otf", "Cereal", "normal");
+  doc.addFont("Cereal Bold.otf", "Cereal Bold", "normal");
+  doc.setFont("Cereal");
+  doc.setFontSize(9);
+  let y = 10;
+  shownParks.value.forEach((park) => {
+    let text = "";
+    doc.setFont("Cereal Bold");
+    text += `${park.title} - ${park.region} Nevada\n`;
+    doc.text(text, 10, y);
+    text = "";
+    doc.setFont("Cereal");
+    text += `Activities: `;
+    park.activities.forEach((a) => (text += `${a}, `));
+    if (park.activities.length == 0) text += "None";
+    text += "\n";
+    text += `Transportation: `;
+    park.transportation.forEach((a) => (text += `${a}, `));
+    if (park.transportation.length == 0) text += "None";
+    text += "\n";
+    text += `Utilities: `;
+    park.utilities.forEach((a) => (text += `${a}, `));
+    if (park.utilities.length == 0) text += "None";
+    text += "\n";
+    const urlEncodedParkName = park.title.replaceAll(" ", "+");
+    const url =
+      "https://www.google.com/maps/search/?api=1&query=" + urlEncodedParkName;
+    text += url + "\n\n";
+    doc.text(text, 10, y + 10);
+    if (y > PAGE_HEIGHT) {
+      doc.addPage();
+      y = 10;
+    } else {
+      y += 70;
+    }
+  });
+  doc.save("NTRL Parks.pdf");
+  // const blob = new Blob([JSON.stringify(shownParks.value)], {
+  //   type: "text/json;charset=utf-8",
+  // });
+  // saveAs(blob, "data.json"); //saves park data as JSON
 };
 const shownParks = ref<Park[]>([]);
 // onBeforeMount is a method hook provided by Vue.js to run before this component is mounted (i.e, displayed to the User) to the page.
@@ -174,6 +216,7 @@ const openGoogleMapsPark = async (park: Park) => {
             class="flex justify-center items-center w-1/2 border-2 border-black rounded-lg hover:bg-gray-700 hover:text-white active:text-green-600 active:bg-white transition-colors"
             type="button"
             @click="saveData"
+            v-if="shownParks.length != 0"
           >
             <span>Save Data</span>
             <svg
@@ -193,7 +236,7 @@ const openGoogleMapsPark = async (park: Park) => {
           </button>
         </div>
         <div class="overflow-y-auto row-span-11">
-          <ul class="px-4">
+          <ul class="px-4" v-if="shownParks.length != 0">
             <li
               v-for="park in shownParks"
               class="border-2 border-black bg-orange-300 rounded-md w-full p-2 mt-2 hover:bg-orange-400"
@@ -235,6 +278,9 @@ const openGoogleMapsPark = async (park: Park) => {
               </div>
             </li>
           </ul>
+          <div v-else class="text-3xl text-center">
+            No matching results :(<br />Try another search!
+          </div>
         </div>
       </div>
       <div class="overflow-hidden">
