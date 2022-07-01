@@ -79,26 +79,16 @@ const changeData = (newParkSearchData: Park) => {
 const saveData = async () => {
   const doc = new jsPDF("p", "pt", "a4");
   const PAGE_HEIGHT = 842;
-  const font1 = await (
-    await axios.get("/src/assets/fonts/AirbnbCereal_W_Md.otf")
-  ).data;
-  const font2 = await (
-    await axios.get("/src/assets/fonts/AirbnbCereal_W_Bd.otf")
-  ).data;
-  doc.addFileToVFS("Cereal.otf", font1);
-  doc.addFileToVFS("Cereal Bold.otf", font2);
-  doc.addFont("Cereal.otf", "Cereal", "normal");
-  doc.addFont("Cereal Bold.otf", "Cereal Bold", "normal");
-  doc.setFont("Cereal");
+
   doc.setFontSize(9);
   let y = 10;
   shownParks.value.forEach((park) => {
+    doc.setFontSize(11);
     let text = "";
-    doc.setFont("Cereal Bold");
     text += `${park.title} - ${park.region} Nevada\n`;
     doc.text(text, 10, y);
+    doc.setFontSize(9);
     text = "";
-    doc.setFont("Cereal");
     text += `Activities: `;
     park.activities.forEach((a) => (text += `${a}, `));
     if (park.activities.length == 0) text += "None";
